@@ -1,5 +1,12 @@
 package com.nbtech.testtiktokvideodownloader.tasks;
 
+import static android.content.ContentValues.TAG;
+import static android.content.Context.MODE_PRIVATE;
+import static com.nbtech.testtiktokvideodownloader.utils.Constants.DOWNLOADING_MSG;
+import static com.nbtech.testtiktokvideodownloader.utils.Constants.TiktokApi;
+import static com.nbtech.testtiktokvideodownloader.utils.Constants.WEB_DISABLE;
+import static com.nbtech.testtiktokvideodownloader.utils.Constants.WENT_WRONG;
+
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -18,57 +25,50 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import static android.content.ContentValues.TAG;
-import static android.content.Context.MODE_PRIVATE;
-import static com.nbtech.testtiktokvideodownloader.utils.Constants.DOWNLOADING_MSG;
-import static com.nbtech.testtiktokvideodownloader.utils.Constants.TiktokApi;
-import static com.nbtech.testtiktokvideodownloader.utils.Constants.WEB_DISABLE;
-import static com.nbtech.testtiktokvideodownloader.utils.Constants.WENT_WRONG;
-
 public class downloadVideo {
 
     public static Context Mcontext;
     public static ProgressDialog pd;
     public static Dialog dialog;
     static String SessionID, Title;
-    static int error=1;
+    static int error = 1;
     public static SharedPreferences prefs;
 
     public static Boolean fromService;
 
 
-    public static void Start(final Context context , String url , Boolean service ){
+    public static void Start(final Context context, String url, Boolean service) {
 
-        Mcontext=context;
+        Mcontext = context;
         fromService = service;
 
 //SessionID=title;
-        if(!url.startsWith("http://") && !url.startsWith("https://")) {
+        if (!url.startsWith("http://") && !url.startsWith("https://")) {
             url = "http://" + url;
         }
-        if(!fromService) {
+        if (!fromService) {
             pd = new ProgressDialog(context);
             pd.setMessage(DOWNLOADING_MSG);
             pd.setCancelable(false);
             pd.show();
         }
-        if(url.contains("tiktok.com")){
+        if (url.contains("tiktok.com")) {
 
             new GetTikTokVideo().execute(url);
-        } else if (url.contains("facebook.com")){
+        } else if (url.contains("facebook.com")) {
 
 //String[] Furl = url.split("/");
 // url = Furl[Furl.length-1];
 //iUtils.ShowToast(Mcontext,Furl[Furl.length-1]);
             new GetFacebookVideo().execute(url);
-        }else if (url.contains("instagram.com")){
+        } else if (url.contains("instagram.com")) {
 
             new GetInstagramVideo().execute(url);
-        }else{
-            if(!fromService) {
+        } else {
+            if (!fromService) {
                 pd.dismiss();
 
-                iUtils.ShowToast(Mcontext,WEB_DISABLE);
+                iUtils.ShowToast(Mcontext, WEB_DISABLE);
             }
         }
 
@@ -95,36 +95,33 @@ public class downloadVideo {
         }
 
         protected void onPostExecute(Document result) {
-// pd.dismiss();
-// Log.d("GetResult", );
             try {
                 String URL = result.select("link[rel=\"canonical\"]").last().attr("href");
 
-                if(!URL.equals("") && URL.contains("video/")){
-                    URL =URL.split("video/")[1];
+                if (!URL.equals("") && URL.contains("video/")) {
+                    URL = URL.split("video/")[1];
                     Title = result.title();
-// iUtils.ShowToast(Mcontext,URL);
                     new DownloadTikTokVideo().execute(URL);
-                }else{
-                    if(!fromService) {
-
+                } else {
+                    if (!fromService) {
                         pd.dismiss();
                     }
-                    iUtils.ShowToast(Mcontext,WENT_WRONG);
+                    iUtils.ShowToast(Mcontext, WENT_WRONG);
                 }
 
             } catch (NullPointerException e) {
                 e.printStackTrace();
-                if(!fromService) {
+                if (!fromService) {
 
                     pd.dismiss();
                 }
-                iUtils.ShowToast(Mcontext,WENT_WRONG);
+                iUtils.ShowToast(Mcontext, WENT_WRONG);
             }
 
 
         }
     }
+
     private static class GetFacebookVideo extends AsyncTask<String, Void, Document> {
         Document doc;
 
@@ -137,7 +134,7 @@ public class downloadVideo {
             } catch (IOException e) {
                 e.printStackTrace();
                 Log.d(TAG, "doInBackground: Error");
-                iUtils.ShowToast(Mcontext,WENT_WRONG);
+                iUtils.ShowToast(Mcontext, WENT_WRONG);
 
             }
             return doc;
@@ -145,22 +142,17 @@ public class downloadVideo {
         }
 
         protected void onPostExecute(Document result) {
-            if(!fromService) {
-
+            if (!fromService) {
                 pd.dismiss();
             }
-// Log.d("GetResult", );
             try {
                 String URL = result.select("meta[property=\"og:video\"]").last().attr("content");
                 Title = result.title();
-// iUtils.ShowToast(Mcontext,URL);
-                new downloadFile().Downloading(Mcontext,URL,Title,".mp4");
-            } catch (NullPointerException e)
-            {
+                new downloadFile().Downloading(Mcontext, URL, Title, ".mp4");
+            } catch (NullPointerException e) {
                 e.printStackTrace();
-                iUtils.ShowToast(Mcontext,WENT_WRONG);
+                iUtils.ShowToast(Mcontext, WENT_WRONG);
             }
-// new DownloadTikTokVideo().execute(URL);
 
         }
     }
@@ -181,23 +173,20 @@ public class downloadVideo {
         }
 
         protected void onPostExecute(Document result) {
-            if(!fromService) {
-
-                pd.dismiss();}
-// Log.d("GetResult", );
+            if (!fromService) {
+                pd.dismiss();
+            }
             try {
                 String URL = result.select("meta[property=\"og:video\"]").last().attr("content");
                 Title = result.title();
-//iUtils.ShowToast(Mcontext, URL);
-
                 new downloadFile().Downloading(Mcontext, URL, Title, ".mp4");
-            }catch (NullPointerException e)
-            {
+            } catch (NullPointerException e) {
                 e.printStackTrace();
-                iUtils.ShowToast(Mcontext,WENT_WRONG);
+                iUtils.ShowToast(Mcontext, WENT_WRONG);
             }
         }
     }
+
     private static class DownloadTikTokVideo extends AsyncTask<String, Void, Document> {
         Document doc;
 
@@ -205,16 +194,16 @@ public class downloadVideo {
         protected Document doInBackground(String... urls) {
             try {
                 Map<String, String> Headers = new HashMap<String, String>();
-                Headers.put("Cookie","1");
-                Headers.put("User-Agent","1");
-                Headers.put("Accept","application/json");
-                Headers.put("Host","api2-16-h2.musical.ly");
-                Headers.put("Connection","keep-alive");
-                doc = Jsoup.connect(TiktokApi).data("aweme_id",urls[0]).ignoreContentType(true).headers(Headers).get();
+                Headers.put("Cookie", "1");
+                Headers.put("User-Agent", "1");
+                Headers.put("Accept", "application/json");
+                Headers.put("Host", "api2-16-h2.musical.ly");
+                Headers.put("Connection", "keep-alive");
+                doc = Jsoup.connect(TiktokApi).data("aweme_id", urls[0]).ignoreContentType(true).headers(Headers).get();
             } catch (IOException e) {
                 e.printStackTrace();
                 Log.d(TAG, "doInBackground: Error");
-                iUtils.ShowToast(Mcontext,WENT_WRONG);
+                iUtils.ShowToast(Mcontext, WENT_WRONG);
 
             }
             return doc;
@@ -222,22 +211,22 @@ public class downloadVideo {
         }
 
         protected void onPostExecute(Document result) {
-            if(!fromService) {
+            if (!fromService) {
 
                 pd.dismiss();
             }
-            String URL = result.body().toString().replace("<body>","").replace("</body>","");
+            String URL = result.body().toString().replace("<body>", "").replace("</body>", "");
             JSONObject jsonObject = null;
             try {
                 jsonObject = new JSONObject(URL);
                 String URLs = jsonObject.getJSONObject("aweme_detail").getJSONObject("video").getJSONObject("play_addr").getJSONArray("url_list").getString(0);
 
-                new downloadFile().Downloading(Mcontext,URLs,Title,".mp4");
+                new downloadFile().Downloading(Mcontext, URLs, Title, ".mp4");
 // iUtils.ShowToast(Mcontext,URLs);
 
-            }catch (JSONException err){
+            } catch (JSONException err) {
                 Log.d("Error", err.toString());
-                iUtils.ShowToast(Mcontext,WENT_WRONG);
+                iUtils.ShowToast(Mcontext, WENT_WRONG);
             }
 
 
