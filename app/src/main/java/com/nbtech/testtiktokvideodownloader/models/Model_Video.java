@@ -1,9 +1,9 @@
 package com.nbtech.testtiktokvideodownloader.models;
 
 public class Model_Video {
-    String str_path,str_thumb;
+    String str_path, str_thumb, str_title;
     boolean boolean_selected;
-    int duration,Id;
+    int duration, Id;
 
     public String getStr_path() {
         return str_path;
@@ -21,6 +21,14 @@ public class Model_Video {
         this.str_thumb = str_thumb;
     }
 
+    public String getStr_title() {
+        return str_title;
+    }
+
+    public void setStr_title(String str_title) {
+        this.str_title = str_title;
+    }
+
     public boolean isBoolean_selected() {
         return boolean_selected;
     }
@@ -29,16 +37,19 @@ public class Model_Video {
         this.boolean_selected = boolean_selected;
     }
 
-    public int getDuration(){
+    public int getDuration() {
         return duration;
     }
-    public void setDuration(int duration){
-        this.duration=duration;
+
+    public void setDuration(int duration) {
+        this.duration = duration;
     }
-    public void setId(int Id){
-        this.Id=Id;
+
+    public void setId(int Id) {
+        this.Id = Id;
     }
-    public int getId(){
+
+    public int getId() {
         return Id;
     }
 }

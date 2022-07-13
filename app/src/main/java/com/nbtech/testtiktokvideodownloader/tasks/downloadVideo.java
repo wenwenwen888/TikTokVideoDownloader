@@ -216,13 +216,12 @@ public class downloadVideo {
                 pd.dismiss();
             }
             String URL = result.body().toString().replace("<body>", "").replace("</body>", "");
-            JSONObject jsonObject = null;
+            JSONObject jsonObject;
             try {
                 jsonObject = new JSONObject(URL);
                 String URLs = jsonObject.getJSONObject("aweme_detail").getJSONObject("video").getJSONObject("play_addr").getJSONArray("url_list").getString(0);
 
                 new downloadFile().Downloading(Mcontext, URLs, Title, ".mp4");
-// iUtils.ShowToast(Mcontext,URLs);
 
             } catch (JSONException err) {
                 Log.d("Error", err.toString());

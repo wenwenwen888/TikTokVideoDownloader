@@ -1,5 +1,7 @@
 package com.nbtech.testtiktokvideodownloader.utils;
 
+import static com.nbtech.testtiktokvideodownloader.utils.Constants.PREF_APPNAME;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -14,8 +16,6 @@ import android.widget.Toast;
 
 import java.net.URL;
 import java.util.regex.Pattern;
-
-import static com.nbtech.testtiktokvideodownloader.utils.Constants.*;
 
 public class iUtils  {
     //private InterstitialAd interstitialAd;
@@ -68,7 +68,6 @@ public class iUtils  {
         return pref.getBoolean(url, false);
     }
     public static void  ShowToast(Context context , String str){
-
         Toast.makeText(context,str,Toast.LENGTH_SHORT).show();
     }
     public static boolean checkURL(CharSequence input) {
