@@ -14,6 +14,14 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.nbtech.testtiktokvideodownloader.R;
+import com.nbtech.testtiktokvideodownloader.douyin.AnyVideoV1;
+import com.nbtech.testtiktokvideodownloader.douyin.Helpers;
+import com.nbtech.testtiktokvideodownloader.douyin.URLInvalidException;
+import com.nbtech.testtiktokvideodownloader.douyin.VideoException;
+import com.nbtech.testtiktokvideodownloader.douyin.VideoParser;
+import com.nbtech.testtiktokvideodownloader.models.AsyncTaskResult;
+import com.nbtech.testtiktokvideodownloader.models.DouYin_Video;
 import com.nbtech.testtiktokvideodownloader.utils.iUtils;
 
 import org.json.JSONException;
@@ -42,7 +50,6 @@ public class downloadVideo {
         Mcontext = context;
         fromService = service;
 
-//SessionID=title;
         if (!url.startsWith("http://") && !url.startsWith("https://")) {
             url = "http://" + url;
         }
@@ -53,16 +60,12 @@ public class downloadVideo {
             pd.show();
         }
         if (url.contains("tiktok.com")) {
-
             new GetTikTokVideo().execute(url);
+        } else if (url.contains("douyin.com")) {
+            new GetDouYinVideo().execute(url);
         } else if (url.contains("facebook.com")) {
-
-//String[] Furl = url.split("/");
-// url = Furl[Furl.length-1];
-//iUtils.ShowToast(Mcontext,Furl[Furl.length-1]);
             new GetFacebookVideo().execute(url);
         } else if (url.contains("instagram.com")) {
-
             new GetInstagramVideo().execute(url);
         } else {
             if (!fromService) {
@@ -71,10 +74,6 @@ public class downloadVideo {
                 iUtils.ShowToast(Mcontext, WEB_DISABLE);
             }
         }
-
-//iUtils.ShowToast(Mcontext,url);
-//iUtils.ShowToast(Mcontext,SessionID);
-
 
         prefs = Mcontext.getSharedPreferences("AppConfig", MODE_PRIVATE);
     }
@@ -118,6 +117,45 @@ public class downloadVideo {
                 iUtils.ShowToast(Mcontext, WENT_WRONG);
             }
 
+        }
+    }
+
+    private static class GetDouYinVideo extends AsyncTask<String, Integer, AsyncTaskResult<DouYin_Video>> {
+
+        @Override
+        protected AsyncTaskResult<DouYin_Video> doInBackground(String... urls) {
+            String str = urls[0];
+            VideoParser parser = null;
+
+            if (Helpers.containsVideoUrl(Mcontext, str)) {
+                parser = AnyVideoV1.getInstance(Mcontext);
+            }
+
+            try {
+                if (parser == null)
+                    throw new URLInvalidException(Mcontext.getString(R.string.exception_invalid_url));
+
+                DouYin_Video video = parser.get(str);
+
+                if (video == null || video.isEmpty())
+                    throw new VideoException(Mcontext.getString(R.string.exception_invalid_video));
+
+                return new AsyncTaskResult<>(video);
+
+            } catch (Throwable e) {
+                return new AsyncTaskResult<>(e);
+            }
+        }
+
+        @Override
+        protected void onPostExecute(AsyncTaskResult<DouYin_Video> result) {
+            super.onPostExecute(result);
+
+            if (!fromService) {
+                pd.dismiss();
+            }
+
+            new downloadFile().Downloading(Mcontext, result.getResult().getUrl(), result.getResult().getTitle(), ".mp4");
 
         }
     }
@@ -204,7 +242,6 @@ public class downloadVideo {
                 e.printStackTrace();
                 Log.d(TAG, "doInBackground: Error");
                 iUtils.ShowToast(Mcontext, WENT_WRONG);
-
             }
             return doc;
 

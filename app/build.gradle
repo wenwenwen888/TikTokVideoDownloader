@@ -8,7 +8,7 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.nbtech.testtiktokvideodownloader"
-        minSdkVersion 15
+        minSdkVersion 26
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -18,6 +18,23 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    signingConfigs {
+        debug {
+            storeFile file('F:\\workspace\\HwSingleGame\\key\\HwSingleGame.jks')
+            storePassword '123456789'
+            keyPassword '123456789'
+            keyAlias 'key0'
+            v2SigningEnabled false
+        }
+        release {
+            storeFile file('F:\\workspace\\HwSingleGame\\key\\HwSingleGame.jks')
+            storePassword '123456789'
+            keyPassword '123456789'
+            keyAlias 'key0'
+            v2SigningEnabled true
         }
     }
     useLibrary 'org.apache.http.legacy'
@@ -40,5 +57,12 @@ dependencies {
     implementation 'org.jsoup:jsoup:1.12.1'
     implementation 'com.github.bumptech.glide:glide:4.9.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
+    //okhttp
+    implementation 'com.squareup.okhttp3:okhttp:4.9.0'
+    //commons-lang/commons-codec
+    implementation 'org.apache.commons:commons-lang3:3.12.0'
+    implementation group: 'commons-codec', name: 'commons-codec', version: '1.15'
+    //jackson
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version:'2.13.0'
 
 }

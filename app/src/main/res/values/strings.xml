@@ -21,4 +21,29 @@
 
     <string name="RateAppTitle">Like this app?</string>
     <string name="RateApp">Share the love by rating 5 stars in Play Store. 😘</string>
+
+    <string name="video_url_regex">(?s)(.*?)(douyin|ixigua\.com|pipix|huoshan|h5\.weishi|isee\.weishi|weibo\.com|oasis\.weibo|zuiyou|xiaochuankeji|bbq.bilibili|kuaishou|quanmin|moviebase|hanyuhl|eyepetizer|immomo|vuevideo|xiaokaxiu|ippzone|pipigx|qq\.com|doupai|6\.cn|huya\.com/play/|pearvideo\.com|xinpianchang\.com|acfun\.cn|meipai\.com)(.*?)</string>
+
+    <string name="exception_invalid_video">无法获取到有效的视频</string>
+    <string name="exception_douyin_url">不是一个抖音视频播放的网址</string>
+    <string name="exception_invalid_url">没有匹配到有效网址，比如：https://v.douyin.com/… 或者删除文案</string>
+    <string name="exception_http">无法访问该URL，或无法获取到有效内容</string>
+    <string name="exception_html">无法获取到视频链接，视频可能已经隐藏。</string>
+
+    <string name="clip_valid">检测到剪贴板中有视频网址，自动跳转到搜索页面</string>
+    <string name="maybe_watermark">获得的视频可能会有水印</string>
+
+    <string name="title_video">视频获取</string>
+    <string name="title_history">查询历史</string>
+    <string name="title_settings">设置</string>
+    <string name="editor_hint">请输入或粘贴内容</string>
+    <string name="search">查找</string>
+    <string name="empty_clipboard">剪贴板为空</string>
+    <string name="paste_success">已粘贴</string>
+    <string name="noURL">内容需要包含一个有效的网址</string>
+    <string name="start_analyzing">开始分析…</string>
+    <string name="restart_analyzing">重新开始分析…</string>
+    <string name="one_more_exit">再按一下退出程序</string>
+    <string name="download_complete">下载完成</string>
+
 </resources>

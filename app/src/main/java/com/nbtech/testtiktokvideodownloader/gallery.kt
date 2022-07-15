@@ -99,7 +99,7 @@ class gallery : Fragment() {
             i += 1
         }
 
-
+        al_video.reverse()
         obj_adapter = Adapter_VideoFolder(cn, al_video, activity)
 
         recyclerView1!!.adapter = null

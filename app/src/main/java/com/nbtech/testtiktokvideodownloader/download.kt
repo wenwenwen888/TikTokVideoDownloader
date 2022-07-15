@@ -121,50 +121,50 @@ class download : Fragment() {
 
     private fun setNofication(b: Boolean) {
 
-        if (b) {
-            val channelId = "${context!!.packageName}-${context!!.getString(R.string.app_name)}"
-            val notificationBuilder = NotificationCompat.Builder(context!!, channelId).apply {
-                setSmallIcon(R.drawable.notification_template_icon_bg) // 3
-                // setStyle(NotificationCompat.)
-                setLargeIcon(
-                    BitmapFactory.decodeResource(
-                        context!!.resources,
-                        R.drawable.notification_template_icon_bg
-                    )
-                )
-                setContentTitle("Auto Download Service") // 4
-                setContentText("Copy the link of video to start download") // 5
-                setOngoing(true)
-                priority = NotificationCompat.PRIORITY_LOW // 7
-                setSound(null)
-                setOnlyAlertOnce(true)
-                setAutoCancel(false)
-                addAction(
-                    R.drawable.navigation_empty_icon,
-                    "Stop",
-                    makePendingIntent("quit_action")
-                )
-
-                val intent = Intent(requireActivity(), MainActivity::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-
-                val pendingIntent = PendingIntent.getActivity(requireActivity(), 0, intent, 0)
-
-                setContentIntent(pendingIntent)
-            }
-            with(NotificationManagerCompat.from(requireActivity())) {
-                // notificationId is a unique int for each notification that you must define
-                notify(NotifyID, notificationBuilder.build())
-
-                Log.e("loged", "testing notification notify!")
-
-
-            }
-
-
-        } else {
-            NotificationManagerCompat.from(requireActivity()).cancel(NotifyID)
-        }
+//        if (b) {
+//            val channelId = "${context!!.packageName}-${context!!.getString(R.string.app_name)}"
+//            val notificationBuilder = NotificationCompat.Builder(context!!, channelId).apply {
+//                setSmallIcon(R.drawable.notification_template_icon_bg) // 3
+//                // setStyle(NotificationCompat.)
+//                setLargeIcon(
+//                    BitmapFactory.decodeResource(
+//                        context!!.resources,
+//                        R.drawable.notification_template_icon_bg
+//                    )
+//                )
+//                setContentTitle("Auto Download Service") // 4
+//                setContentText("Copy the link of video to start download") // 5
+//                setOngoing(true)
+//                priority = NotificationCompat.PRIORITY_LOW // 7
+//                setSound(null)
+//                setOnlyAlertOnce(true)
+//                setAutoCancel(false)
+//                addAction(
+//                    R.drawable.navigation_empty_icon,
+//                    "Stop",
+//                    makePendingIntent("quit_action")
+//                )
+//
+//                val intent = Intent(requireActivity(), MainActivity::class.java)
+//                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+//
+//                val pendingIntent = PendingIntent.getActivity(requireActivity(), 0, intent, 0)
+//
+//                setContentIntent(pendingIntent)
+//            }
+//            with(NotificationManagerCompat.from(requireActivity())) {
+//                // notificationId is a unique int for each notification that you must define
+//                notify(NotifyID, notificationBuilder.build())
+//
+//                Log.e("loged", "testing notification notify!")
+//
+//
+//            }
+//
+//
+//        } else {
+//            NotificationManagerCompat.from(requireActivity()).cancel(NotifyID)
+//        }
     }
 
     fun startClipboardMonitor() {
